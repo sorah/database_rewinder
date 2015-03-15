@@ -1,4 +1,6 @@
+p [:database_rewinder, :top]
 require_relative 'database_rewinder/cleaner'
+p [:database_rewinder, :dependency_ok]
 
 module DatabaseRewinder
   VERSION = Gem.loaded_specs['database_rewinder'].version.to_s
@@ -93,10 +95,17 @@ module DatabaseRewinder
   end
 end
 
+p [:database_rewinder, :load_patch]
 begin
   require 'rails'
+  p [:database_rewinder, :rails]
   require_relative 'database_rewinder/railtie'
+  p [:database_rewinder, :railtie]
 rescue LoadError
+  p [:database_rewinder, :err, $!]
   DatabaseRewinder.init
+  p [:database_rewinder, :init]
   require_relative 'database_rewinder/active_record_monkey'
+  p [:database_rewinder, :monkey]
 end
+p [:database_rewinder, :done]
